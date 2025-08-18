@@ -1,50 +1,108 @@
-// Bring ssi prelude for easy imports
-use ssi::prelude::*;
+mod models;
+mod fhir_handler;
+mod pdf_generator;
 
-// Define your credential subject data
-#[derive(Serialize, Deserialize)]
-struct MyClaims {
-    name: String,
-    role: String,
+use models::*;
+use fhir_handler::FHIRHandler;
+use pdf_generator::PDFGenerator;
+use std::fs;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("🚀 FHIR to PDF Generator - MVP Version");
+    println!("=====================================\n");
+    
+    // Read FHIR JSON from file
+    let fhir_json = fs::read_to_string("../FHIR/FHIRBundle.json")?;
+    println!("📖 Loaded FHIR JSON from file");
+    
+    // Parse FHIR JSON into structured data
+    let mut handler = FHIRHandler::new();
+    let bundle = handler.parse_fhir_json(&fhir_json)?;
+    println!("✅ Successfully parsed FHIR JSON into structured data");
+    
+    // Validate the bundle
+    match handler.validate_bundle(&bundle) {
+        Ok(()) => println!("✅ FHIR Bundle validation passed"),
+        Err(errors) => {
+            println!("❌ FHIR Bundle validation failed:");
+            for error in errors {
+                println!("   - {}", error);
+            }
+        }
+    }
+    
+    // Generate PDF (text file for MVP)
+    let output_path = "patient_visit_summary.txt";
+    let pdf_generator = PDFGenerator::new(output_path.to_string());
+    pdf_generator.generate_pdf(&bundle)?;
+    
+    println!("\n🎉 Successfully generated patient visit summary!");
+    println!("📄 Output file: {}", output_path);
+    
+    // Display some extracted information
+    println!("\n📊 Extracted Information Summary:");
+    println!("--------------------------------");
+    
+    if let Some(patient) = extract_patient(&bundle) {
+        println!("👤 Patient: {} {}", 
+            patient.name.first().map(|n| n.given.join(" ")).unwrap_or_default(),
+            patient.name.first().map(|n| &n.family).unwrap_or(&"".to_string())
+        );
+    }
+    
+    if let Some(practitioner) = extract_practitioner(&bundle) {
+        println!("👨‍⚕️ Practitioner: {} {}", 
+            practitioner.name.first().map(|n| n.prefix.as_ref().unwrap_or(&vec![]).join(" ")).unwrap_or_default(),
+            practitioner.name.first().map(|n| &n.family).unwrap_or(&"".to_string())
+        );
+    }
+    
+    if let Some(encounter) = extract_encounter(&bundle) {
+        println!("🏥 Visit Type: {}", encounter.class.display);
+    }
+    
+    if let Some(medication) = extract_medication_request(&bundle) {
+        println!("💊 Medication: {}", 
+            medication.medication_codeable_concept.text.as_ref().unwrap_or(&"".to_string())
+        );
+    }
+    
+    Ok(())
 }
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // 1. Build the claims we want to include
-    let claims = MyClaims { name: "Alice".into(), role: "Verifier".into() };
-    let jwt_claims = JWTClaims::from_private_claims(claims);
+// Helper functions to extract resources from bundle
+fn extract_patient(bundle: &Bundle) -> Option<&Patient> {
+    for entry in &bundle.entry {
+        if let Resource::Patient(patient) = &entry.resource {
+            return Some(patient);
+        }
+    }
+    None
+}
 
-    // 2. Generate a signing key (ECDSA P-256); reuse your existing DID key if available
-    let mut key = JWK::generate_p256()?;
-    let did = DIDJWK::generate_url(&key.to_public());
-    key.key_id = Some(did.clone().into());
+fn extract_practitioner(bundle: &Bundle) -> Option<&Practitioner> {
+    for entry in &bundle.entry {
+        if let Resource::Practitioner(practitioner) = &entry.resource {
+            return Some(practitioner);
+        }
+    }
+    None
+}
 
-    // 3. Sign the claims as JWT-VC
-    let jwt = jwt_claims.sign(&key).await?;
+fn extract_encounter(bundle: &Bundle) -> Option<&Encounter> {
+    for entry in &bundle.entry {
+        if let Resource::Encounter(encounter) = &entry.resource {
+            return Some(encounter);
+        }
+    }
+    None
+}
 
-    // 4. Prepare the Verifiable Credential (JSON-LD Data-Integrity)
-    let mut vc = ssi::claims::vc::v1::Credential {
-        context: vec![ssi::VC_CONTEXT.clone()],
-        id: Some(URI::String("urn:uuid:1234".into())),
-        types: vec!["VerifiableCredential".into()],
-        issuer: Some(Issuer::URI(URI::String(did.clone()))),
-        issuance_date: Some(chrono::Utc::now()),
-        credential_subject: serde_json::json!({ "id": "did:hedera:0.0.1234", "claims": jwt }),
-        proof: None,
-        expiration_date: None,
-        credential_status: None,
-    };
-
-    // 5. Sign the VC using Data Integrity proof
-    ssi::claims::vc::data_integrity::Credential::add_proof(&mut vc, &key, None).await?;
-
-    // 6. Serialize to JSON
-    let vc_json = serde_json::to_string_pretty(&vc)?;
-    println!("Signed VC JSON:\n{}", vc_json);
-
-    // 7. Compute hash to anchor on-chain
-    let data_hash = sha2::Sha256::digest(vc_json.as_bytes());
-    println!("SHA-256 data hash: 0x{}", hex::encode(data_hash));
-
-    Ok(())
+fn extract_medication_request(bundle: &Bundle) -> Option<&MedicationRequest> {
+    for entry in &bundle.entry {
+        if let Resource::MedicationRequest(medication) = &entry.resource {
+            return Some(medication);
+        }
+    }
+    None
 }
