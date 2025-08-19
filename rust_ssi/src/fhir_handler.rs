@@ -1,4 +1,6 @@
 use crate::models::*;
+use crate::models::observation::ObservationComponent;
+use crate::models::medication::DosageInstruction;
 use serde_json::Value;
 use std::collections::HashMap;
 
@@ -113,8 +115,8 @@ impl FHIRHandler {
             for contact in telecom {
                 let system = contact.get("system").and_then(|v| v.as_str()).unwrap_or("").to_string();
                 let value = contact.get("value").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                let use = contact.get("use").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                patient.add_contact(system, value, use);
+                let use_value = contact.get("use").and_then(|v| v.as_str()).unwrap_or("").to_string();
+                patient.add_contact(system, value, use_value);
             }
         }
         
@@ -452,13 +454,7 @@ impl FHIRHandler {
         if let Some(dosage_instructions) = resource.get("dosageInstruction").and_then(|v| v.as_array()) {
             for instruction in dosage_instructions {
                 let text = instruction.get("text").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                let dosage_instruction = DosageInstruction {
-                    text,
-                    timing: None,
-                    route: None,
-                    dose_and_rate: None,
-                };
-                medication_request.add_dosage_instruction(dosage_instruction);
+                medication_request.add_dosage_instruction(text);
             }
         }
         

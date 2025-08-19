@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use super::common::{CodeableConcept, Coding, Reference, Quantity, Period};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MedicationRequest {
@@ -13,25 +14,6 @@ pub struct MedicationRequest {
     pub requester: Option<Reference>,
     pub dosage_instruction: Vec<DosageInstruction>,
     pub dispense_request: Option<DispenseRequest>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CodeableConcept {
-    pub coding: Vec<Coding>,
-    pub text: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Coding {
-    pub system: String,
-    pub code: String,
-    pub display: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Reference {
-    pub reference: String,
-    pub display: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -58,24 +40,10 @@ pub struct TimingRepeat {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Period {
-    pub start: String,
-    pub end: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DoseAndRate {
     #[serde(rename = "type")]
     pub dose_type: Option<CodeableConcept>,
     pub dose_quantity: Option<Quantity>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Quantity {
-    pub value: f64,
-    pub unit: String,
-    pub system: Option<String>,
-    pub code: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -116,11 +84,19 @@ impl MedicationRequest {
         self.requester = Some(requester);
     }
 
-    pub fn add_dosage_instruction(&mut self, instruction: DosageInstruction) {
-        self.dosage_instruction.push(instruction);
+    pub fn add_dosage_instruction(&mut self, text: String) {
+        self.dosage_instruction.push(DosageInstruction {
+            text,
+            timing: None,
+            route: None,
+            dose_and_rate: None,
+        });
     }
 
-    pub fn set_dispense_request(&mut self, dispense_request: DispenseRequest) {
-        self.dispense_request = Some(dispense_request);
+    pub fn set_dispense_request(&mut self, quantity: Quantity, number_of_repeats: Option<u32>) {
+        self.dispense_request = Some(DispenseRequest {
+            quantity,
+            number_of_repeats_allowed: number_of_repeats,
+        });
     }
 }

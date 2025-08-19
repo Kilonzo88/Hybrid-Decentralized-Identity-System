@@ -47,4 +47,4 @@ tokio-test = "0.4"
 [features]
 default = ["basic"]
 basic = []
-full = ["ssi", "mongodb", "printpdf", "axum", "hedera-sdk-rust"]
+full = []

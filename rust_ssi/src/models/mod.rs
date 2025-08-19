@@ -1,19 +1,18 @@
-// FHIR Models Module
-// Re-exports all FHIR resource structs
-
-pub mod bundle;
+pub mod common;
 pub mod patient;
 pub mod practitioner;
-pub mod encounter;
 pub mod observation;
-pub mod condition;
 pub mod medication;
+pub mod encounter;
+pub mod condition;
+pub mod bundle;
 
-// Re-export main structs for easy access
-pub use bundle::Bundle;
+// Re-export common types to avoid duplication
+pub use common::{Identifier, HumanName, ContactPoint, CodeableConcept, Coding, Reference, Quantity, Period};
 pub use patient::Patient;
 pub use practitioner::Practitioner;
-pub use encounter::Encounter;
 pub use observation::Observation;
-pub use condition::Condition;
 pub use medication::MedicationRequest;
+pub use encounter::Encounter;
+pub use condition::Condition;
+pub use bundle::{Bundle, BundleEntry, Resource, Signature, SignatureType};

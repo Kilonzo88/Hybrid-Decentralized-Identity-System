@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::models::{Patient, Practitioner, Encounter, Observation, Condition, MedicationRequest};
+use crate::models::{Patient, Practitioner, Encounter, Observation, Condition, MedicationRequest, Reference};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Bundle {
@@ -45,11 +45,7 @@ pub struct SignatureType {
     pub display: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Reference {
-    pub reference: String,
-    pub display: Option<String>,
-}
+
 
 impl Bundle {
     pub fn new(id: String, bundle_type: String, timestamp: String) -> Self {

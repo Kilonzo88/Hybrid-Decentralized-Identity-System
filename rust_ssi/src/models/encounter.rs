@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use super::common::{Coding, CodeableConcept, Reference, Period};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Encounter {
@@ -15,33 +16,8 @@ pub struct Encounter {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Coding {
-    pub system: String,
-    pub code: String,
-    pub display: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CodeableConcept {
-    pub coding: Vec<Coding>,
-    pub text: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Reference {
-    pub reference: String,
-    pub display: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EncounterParticipant {
     pub individual: Reference,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Period {
-    pub start: String,
-    pub end: String,
 }
 
 impl Encounter {

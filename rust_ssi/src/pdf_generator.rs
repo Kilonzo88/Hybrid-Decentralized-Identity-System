@@ -131,7 +131,7 @@ impl PDFGenerator {
         Ok(())
     }
     
-    fn extract_patient(&self, bundle: &Bundle) -> Option<&Patient> {
+        fn extract_patient<'a>(&self, bundle: &'a Bundle) -> Option<&'a Patient> {
         for entry in &bundle.entry {
             if let Resource::Patient(patient) = &entry.resource {
                 return Some(patient);
@@ -139,8 +139,8 @@ impl PDFGenerator {
         }
         None
     }
-    
-    fn extract_practitioner(&self, bundle: &Bundle) -> Option<&Practitioner> {
+
+    fn extract_practitioner<'a>(&self, bundle: &'a Bundle) -> Option<&'a Practitioner> {
         for entry in &bundle.entry {
             if let Resource::Practitioner(practitioner) = &entry.resource {
                 return Some(practitioner);
@@ -148,8 +148,8 @@ impl PDFGenerator {
         }
         None
     }
-    
-    fn extract_encounter(&self, bundle: &Bundle) -> Option<&Encounter> {
+
+    fn extract_encounter<'a>(&self, bundle: &'a Bundle) -> Option<&'a Encounter> {
         for entry in &bundle.entry {
             if let Resource::Encounter(encounter) = &entry.resource {
                 return Some(encounter);
@@ -157,8 +157,8 @@ impl PDFGenerator {
         }
         None
     }
-    
-    fn extract_observation(&self, bundle: &Bundle) -> Option<&Observation> {
+
+    fn extract_observation<'a>(&self, bundle: &'a Bundle) -> Option<&'a Observation> {
         for entry in &bundle.entry {
             if let Resource::Observation(observation) = &entry.resource {
                 return Some(observation);
@@ -166,8 +166,8 @@ impl PDFGenerator {
         }
         None
     }
-    
-    fn extract_condition(&self, bundle: &Bundle) -> Option<&Condition> {
+
+    fn extract_condition<'a>(&self, bundle: &'a Bundle) -> Option<&'a Condition> {
         for entry in &bundle.entry {
             if let Resource::Condition(condition) = &entry.resource {
                 return Some(condition);
@@ -175,8 +175,8 @@ impl PDFGenerator {
         }
         None
     }
-    
-    fn extract_medication_request(&self, bundle: &Bundle) -> Option<&MedicationRequest> {
+
+    fn extract_medication_request<'a>(&self, bundle: &'a Bundle) -> Option<&'a MedicationRequest> {
         for entry in &bundle.entry {
             if let Resource::MedicationRequest(medication) = &entry.resource {
                 return Some(medication);

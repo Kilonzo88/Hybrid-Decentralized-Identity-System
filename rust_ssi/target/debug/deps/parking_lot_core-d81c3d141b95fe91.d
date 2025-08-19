@@ -1,0 +1,11 @@
+/home/dk/DIDs/rust_ssi/target/debug/deps/libparking_lot_core-d81c3d141b95fe91.rmeta: /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/lib.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/parking_lot.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/spinwait.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/thread_parker/mod.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/util.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/word_lock.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/thread_parker/linux.rs
+
+/home/dk/DIDs/rust_ssi/target/debug/deps/parking_lot_core-d81c3d141b95fe91.d: /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/lib.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/parking_lot.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/spinwait.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/thread_parker/mod.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/util.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/word_lock.rs /home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/thread_parker/linux.rs
+
+/home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/lib.rs:
+/home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/parking_lot.rs:
+/home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/spinwait.rs:
+/home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/thread_parker/mod.rs:
+/home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/util.rs:
+/home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/word_lock.rs:
+/home/dk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.11/src/thread_parker/linux.rs:

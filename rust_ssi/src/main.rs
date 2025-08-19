@@ -12,7 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("=====================================\n");
     
     // Read FHIR JSON from file
-    let fhir_json = fs::read_to_string("../FHIR/FHIRBundle.json")?;
+    let fhir_json = fs::read_to_string("FHIR/FHIRBundle.json")?;
     println!("📖 Loaded FHIR JSON from file");
     
     // Parse FHIR JSON into structured data

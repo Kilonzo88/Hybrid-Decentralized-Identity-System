@@ -1,0 +1,48 @@
+PATIENT VISIT SUMMARY & PRESCRIPTION
+=====================================
+
+PATIENT INFORMATION
+-------------------
+Name: John Michael Doe
+Gender: male
+Date of Birth: 1980-01-15
+MRN: MRN-0012345
+phone: +1-555-123-4567
+email: john.doe@email.com
+
+PRACTITIONER INFORMATION
+------------------------
+Doctor: Dr. Alice Marie Smith
+NPI: 1234567890
+
+VISIT DETAILS
+-------------
+Encounter ID: encounter-456
+Status: finished
+Class: Ambulatory
+Reason: Annual Physical Exam
+
+OBSERVATIONS
+------------
+Type: Blood Pressure
+Systolic: 120 mmHg
+Diastolic: 80 mmHg
+
+DIAGNOSIS
+---------
+Condition: Hypertension
+Recorded Date: 2024-07-30
+
+PRESCRIPTION
+------------
+Medication: Amoxicillin 250 mg capsule
+Status: active
+Intent: order
+Authored On: 2024-07-30T10:45:00Z
+Instructions: Take 1 capsule by mouth three times a day for 10 days with food
+
+DIGITAL SIGNATURE
+-----------------
+Signed By: Practitioner/dr-smith
+Date: 2024-07-30T10:30:00Z
+Signature Hash: base64-encoded-signature-data

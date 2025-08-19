@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use super::common::{Identifier, HumanName, ContactPoint};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Patient {
@@ -11,43 +12,6 @@ pub struct Patient {
     pub telecom: Option<Vec<ContactPoint>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Identifier {
-    pub system: String,
-    pub value: String,
-    pub use: Option<String>,
-    #[serde(rename = "type")]
-    pub identifier_type: Option<CodeableConcept>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct HumanName {
-    pub family: String,
-    pub given: Vec<String>,
-    pub use: Option<String>,
-    pub prefix: Option<Vec<String>>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ContactPoint {
-    pub system: String,
-    pub value: String,
-    pub use: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CodeableConcept {
-    pub coding: Vec<Coding>,
-    pub text: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Coding {
-    pub system: String,
-    pub code: String,
-    pub display: String,
-}
-
 impl Patient {
     pub fn new(id: String, family: String, given: Vec<String>, gender: String, birth_date: String) -> Self {
         Self {
@@ -57,7 +21,7 @@ impl Patient {
             name: vec![HumanName {
                 family,
                 given,
-                use: Some("official".to_string()),
+                //use_field: Some("official".to_string()),
                 prefix: None,
             }],
             gender,
@@ -70,17 +34,17 @@ impl Patient {
         self.identifier.push(Identifier {
             system,
             value,
-            use: Some("official".to_string()),
-            identifier_type: None,
+            // use_field: Some("official".to_string()),
+            // identifier_type: None,
         });
     }
 
-    pub fn add_contact(&mut self, system: String, value: String, use: String) {
+    pub fn add_contact(&mut self, system: String, value: String, use_value: String) {
         if self.telecom.is_none() {
             self.telecom = Some(Vec::new());
         }
         if let Some(ref mut telecom) = self.telecom {
-            telecom.push(ContactPoint { system, value, use: Some(use) });
+            telecom.push(ContactPoint { system, value, use_field: Some(use_value) });
         }
     }
 }

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use super::common::{CodeableConcept, Coding, Reference, Quantity};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Observation {
@@ -16,36 +17,9 @@ pub struct Observation {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CodeableConcept {
-    pub coding: Vec<Coding>,
-    pub text: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Coding {
-    pub system: String,
-    pub code: String,
-    pub display: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Reference {
-    pub reference: String,
-    pub display: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObservationComponent {
     pub code: CodeableConcept,
     pub value_quantity: Quantity,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Quantity {
-    pub value: f64,
-    pub unit: String,
-    pub system: Option<String>,
-    pub code: Option<String>,
 }
 
 impl Observation {

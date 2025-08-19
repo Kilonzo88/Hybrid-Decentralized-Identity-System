@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use super::common::{Identifier, HumanName, ContactPoint};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Practitioner {
@@ -6,21 +7,7 @@ pub struct Practitioner {
     pub id: String,
     pub identifier: Vec<Identifier>,
     pub name: Vec<HumanName>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Identifier {
-    pub system: String,
-    pub value: String,
-    pub use: Option<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct HumanName {
-    pub family: String,
-    pub given: Vec<String>,
-    pub use: Option<String>,
-    pub prefix: Option<Vec<String>>,
+    pub telecom: Option<Vec<ContactPoint>>,
 }
 
 impl Practitioner {
@@ -32,9 +19,10 @@ impl Practitioner {
             name: vec![HumanName {
                 family,
                 given,
-                use: Some("official".to_string()),
+                //use_field: Some("official".to_string()),
                 prefix: Some(vec!["Dr.".to_string()]),
             }],
+            telecom: None,
         }
     }
 
@@ -42,7 +30,17 @@ impl Practitioner {
         self.identifier.push(Identifier {
             system,
             value,
-            use: Some("official".to_string()),
+            //use_field: Some("official".to_string()),
+            //identifier_type: None,
         });
+    }
+
+    pub fn add_contact(&mut self, system: String, value: String, use_value: String) {
+        if self.telecom.is_none() {
+            self.telecom = Some(Vec::new());
+        }
+        if let Some(ref mut telecom) = self.telecom {
+            telecom.push(ContactPoint { system, value, use_field: Some(use_value) });
+        }
     }
 }
